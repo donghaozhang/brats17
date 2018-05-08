@@ -1,5 +1,5 @@
 [data]
-data_root         = /home/guotwang/data/Brats17TrainingData
+data_root         = /home/donghao/Desktop/donghao/brain_sgementation/MICCAI_BraTS17_Data_Training
 save_folder       = result17
 data_names        = config17/test_names_temp.txt
 modality_postfix  = [flair, t1, t1ce, t2]

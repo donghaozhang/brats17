@@ -79,7 +79,7 @@ if __name__ == '__main__':
         patient_names_file = 'config15/test_names.txt'
     else:
         s_folder = 'result17'
-        g_folder = '/home/guotwang/data/Brats17TrainingData'
+        g_folder = '/home/donghao/Desktop/donghao/brain_sgementation/MICCAI_BraTS17_Data_Training'
         patient_names_file = 'config15/test_names.txt'
 
     test_types = ['whole','core', 'all']

@@ -15,7 +15,7 @@ import time
 import os
 import sys
 import tensorflow as tf
-from tensorflow.contrib.data import Iterator
+# from tensorflow.contrib.data import Iterator
 from util.data_loader import *
 from util.data_process import *
 from util.train_test_func import *
@@ -31,7 +31,7 @@ def test(config_file):
     config_net3 = config.get('network3', None)
     config_test = config['testing']  
     batch_size  = config_test.get('batch_size', 5)
-    
+    print('is the code running or not?')
     # 2.1, network for whole tumor
     if(config_net1):
         net_type1    = config_net1['net_type']

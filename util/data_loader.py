@@ -77,6 +77,8 @@ class DataLoader():
                     volume_name = img_file_dir + '/' + img_file_dir + '.' + self.file_postfix
                     break
         assert(volume_name is not None)
+        print('patient_dir: ', patient_dir)
+        print('volume_name: ', volume_name)
         volume_name = os.path.join(patient_dir, volume_name)
         volume = load_3d_volume_as_array(volume_name)
         return volume, volume_name
@@ -119,7 +121,8 @@ class DataLoader():
             in_size.append(volume_size)
             if(self.with_ground_truth):
                 label = self.__load_one_volume(self.patient_names[i], self.label_postfix)
-                label = crop_ND_volume_with_bounding_box(label, bbmin, bbmax)
+                print('the shape of label is ', label[0].shape)
+                label = crop_ND_volume_with_bounding_box(label[0], bbmin, bbmax)
                 if(self.data_resize):
                     label = resize_3D_volume_to_given_shape(label, self.data_resize, 0)
                 Y.append(label)

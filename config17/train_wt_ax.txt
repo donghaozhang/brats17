@@ -1,5 +1,5 @@
 [data]
-data_root             = /home/guotwang/data/Brats17TrainingData
+data_root             = /home/donghao/Desktop/donghao/brain_sgementation/MICCAI_BraTS17_Data_Training
 data_names            = config17/train_names_all.txt
 modality_postfix      = [flair, t1, t1ce, t2]
 label_postfix         = seg
