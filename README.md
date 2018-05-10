@@ -27,7 +27,7 @@ pip install niftynet
 
 # How to use
 ## 1, Prepare data
-* Download BraTS dataset, and uncompress the training and tesing zip files. For example, the training set will be in `data_root/BRATS2015_Training` or `data_root/Brats17TrainingData` and the validation set will be in `data_root/BRATS2015_Validation` or `data_root/Brats17ValidationData`.
+* Download BraTS dataset, and uncompress the training and testing zip files. For example, the training set will be in `../data_root/BRATS2015_Training` or `data_root/MICCAI_BraTS17_Data_Training` and the validation set will be in `data_root/BRATS2015_Validation` or `data_root/Brats17ValidationData`.
 
 ## 2, Use pre-trained models to segment images
 * To segment BraTS 2015 data, run:

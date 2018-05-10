@@ -457,5 +457,4 @@ if __name__ == '__main__':
     config_file = str(sys.argv[1])
     assert(os.path.isfile(config_file))
     test(config_file)
-    
-    
+
