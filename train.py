@@ -70,10 +70,11 @@ def train(config_file):
                     name = net_name)
     net.set_params(config_net)
     predicty = net(x, is_training = True)
-    print('the prediction has been produced')
+    print('the prediction has been produced', predicty)
     proby    = tf.nn.softmax(predicty)
     
     loss_func = LossFunction(n_class=class_num)
+    print('the size of y is ', y)
     loss = loss_func(predicty, y, weight_map = w)
     print('size of predicty:',predicty)
     

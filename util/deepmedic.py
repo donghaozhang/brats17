@@ -53,7 +53,7 @@ class DeepMedic(BaseNet):
         # to make sure same size of feature maps from both pathways:
         #   normal path size: (image_size / d_factor - 16) * d_factor + 16
         #   normal path output: (image_size / d_factor - 16) * d_factor
-
+        print('deepmedic is running')
         # where 16 is fixed by the receptive field of conv layers
         # TODO: make sure label_size = image_size/d_factor - 16
 
