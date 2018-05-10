@@ -26,6 +26,8 @@ from util.parse_config import parse_config
 from util.MSNet import MSNet
 from util.deepmedic import DeepMedic
 from util.vnet import VNet
+from util.UNet3D import UNet3D
+from util.highres3dnet import HighRes3DNet
 
 class NetFactory(object):
     @staticmethod
@@ -36,6 +38,10 @@ class NetFactory(object):
             return DeepMedic
         elif name == 'VNet':
             return VNet
+        elif name == 'UNet3D':
+            return UNet3D
+        elif name == 'HighRes3DNet':
+            return HighRes3DNet
         # add your own networks here
         print('unsupported network:', name)
         exit()
