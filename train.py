@@ -25,6 +25,7 @@ from util.train_test_func import *
 from util.parse_config import parse_config
 from util.MSNet import MSNet
 from util.deepmedic import DeepMedic
+from util.vnet import VNet
 
 class NetFactory(object):
     @staticmethod
@@ -33,6 +34,8 @@ class NetFactory(object):
             return MSNet
         elif name == 'DeepMedic':
             return DeepMedic
+        elif name == 'VNet':
+            return VNet
         # add your own networks here
         print('unsupported network:', name)
         exit()
