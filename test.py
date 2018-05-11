@@ -30,7 +30,7 @@ def test(config_file):
     config_net2 = config.get('network2', None)
     config_net3 = config.get('network3', None)
     config_test = config['testing']  
-    batch_size  = config_test.get('batch_size', 5)
+    batch_size  = config_test.get('batch_size', 1)
     print('is the code running or not?')
     # 2.1, network for whole tumor
     if(config_net1):

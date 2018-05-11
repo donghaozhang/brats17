@@ -49,6 +49,9 @@ def volume_probability_prediction(temp_imgs, data_shape, label_shape, data_chann
             center_slice = sub_label_idx*label_shape[0] + int(label_shape[0]/2)
             center_slice = min(center_slice, D - int(label_shape[0]/2))
             temp_input_center = [center_slice, input_center[1], input_center[2], int(class_num/2)]
+            print('the value of label shape is ', label_shape)
+            label_shape[1] = 8
+            label_shape[2] = 8
             sub_prob = np.reshape(prob_mini_batch[batch_idx], label_shape + [class_num])
             temp_prob = set_roi_to_volume(temp_prob, temp_input_center, sub_prob)
             sub_label_idx = sub_label_idx + 1
@@ -116,13 +119,17 @@ def volume_probability_prediction_dynamic_shape(temp_imgs, data_shape, label_sha
     Wx = max(int((W+3)/4)*4, data_shape[2])
     data_slice = data_shape[0]
     label_slice = label_shape[0]
+    Hx, Wx = 96, 96
     full_data_shape = [batch_size, data_slice, Hx, Wx, data_channel]
     x = tf.placeholder(tf.float32, full_data_shape)
+    print('the tensor x :', x)
     predicty = net(x, is_training = True)
     proby = tf.nn.softmax(predicty)
     
     new_data_shape = [data_slice, Hx, Wx]
     new_label_shape = [label_slice, Hx, Wx]
+    print('new_data_shape', new_data_shape)
+    print('new_label_shape', new_label_shape)
     temp_prob = volume_probability_prediction(temp_imgs, new_data_shape, new_label_shape, data_channel, 
                                               class_num, batch_size, sess, proby, x)
     return temp_prob

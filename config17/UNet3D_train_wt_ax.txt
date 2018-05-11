@@ -30,4 +30,4 @@ start_iteration    = 0
 test_iteration     = 1
 test_step          = 1
 model_pre_trained  = 
-model_save_prefix  = model17/msnet_wt32
+model_save_prefix  = model17/UNet3D_wt32
