@@ -123,11 +123,11 @@ class DataLoader():
             in_size.append(volume_size)
             if(self.with_ground_truth):
                 label = self.__load_one_volume(self.patient_names[i], self.label_postfix)
-                print('the shape of label is ', label[0].shape)
+                # print('the shape of label is ', label[0].shape)
                 label = crop_ND_volume_with_bounding_box(label[0], bbmin, bbmax)
-                print('label shape after crop', label.shape)
+                # print('label shape after crop', label.shape)
                 if(self.data_resize):
-                    print('data has been resized.')
+                    # print('data has been resized.')
                     label = resize_3D_volume_to_given_shape(label, self.data_resize, 0)
                 Y.append(label)
             if((i+1)%50 == 0 or (i+1) == data_num):
@@ -179,7 +179,7 @@ class DataLoader():
             idx = random.randint(0,2)
             slice_direction = directions[idx]
         for i in range(batch_size):
-            print('the number of batch_size is ', batch_size)
+            # print('the number of batch_size is ', batch_size)
             if(self.with_flip):
                 flip = random.random() > 0.5
             else:
@@ -190,7 +190,7 @@ class DataLoader():
             boundingbox = None
             if(self.with_ground_truth):
                 label_volumes = [self.label[self.patient_id]]
-                print('label_volumes is ', np.unique(label_volumes))
+                # print('label_volumes is ', np.unique(label_volumes))
                 if(train_with_roi_patch):
                     mask_volume = np.zeros_like(label_volumes[0])
                     for mask_label in label_roi_mask:
@@ -220,15 +220,15 @@ class DataLoader():
                                                                      range(minw, maxw))]
 
                 if(self.label_convert_source and self.label_convert_target):
-                    print('convert label is ', np.unique(label_volumes))
+                    # print('convert label is ', np.unique(label_volumes))
                     label_volumes[0] = convert_label(label_volumes[0], self.label_convert_source, self.label_convert_target)
         
             transposed_volumes = transpose_volumes(data_volumes, slice_direction)
             volume_shape = transposed_volumes[0].shape
             sub_data_shape = [data_slice_number, data_shape[1], data_shape[2]]
-            print('sub_data_shape is : ', sub_data_shape)
+            # print('sub_data_shape is : ', sub_data_shape)
             sub_label_shape =[label_slice_number, label_shape[1], label_shape[2]]
-            print('sub_label_shape is ', sub_label_shape)
+            # print('sub_label_shape is ', sub_label_shape)
             center_point = get_random_roi_sampling_center(volume_shape, sub_label_shape, batch_sample_model, boundingbox)
             sub_data = []
             for moda in range(len(transposed_volumes)):
@@ -253,8 +253,8 @@ class DataLoader():
             weight_batch.append([sub_weight])
             if(self.with_ground_truth):
                 tranposed_label = transpose_volumes(label_volumes, slice_direction)
-                print('tranposed_label is ', tranposed_label[0].shape)
-                print('center point is ', center_point)
+                # print('tranposed_label is ', tranposed_label[0].shape)
+                # print('center point is ', center_point)
                 sub_label = extract_roi_from_volume(tranposed_label[0],
                                                      center_point,
                                                      sub_label_shape,
@@ -266,11 +266,10 @@ class DataLoader():
                 label_batch.append([sub_label])
                     
         data_batch = np.asarray(data_batch, np.float32)
-        print('the shape of data_batch is ', data_batch.shape)
+        # print('the shape of data_batch is ', data_batch.shape)
         weight_batch = np.asarray(weight_batch, np.float32)
-        print('the shape of weight_batch is ', weight_batch.shape)
+        # print('the shape of weight_batch is ', weight_batch.shape)
         label_batch = np.asarray(label_batch, np.int64)
-        print
         batch = {}
         batch['images']  = np.transpose(data_batch,   [0, 2, 3, 4, 1])
         batch['weights'] = np.transpose(weight_batch, [0, 2, 3, 4, 1])

@@ -24,7 +24,7 @@ from train import NetFactory
 
 def test(config_file):
     # 1, load configure file
-    print('Load Configure File')
+    print('1 Load Configure File')
     config = parse_config(config_file)
     config_data = config['data']
     config_net1 = config.get('network1', None)
@@ -32,7 +32,7 @@ def test(config_file):
     batch_size  = config_test.get('batch_size', 1)
 
     # 2.1, network for whole tumor
-    print('Construct Network Graph for Brain Tumor')
+    print('2.1 Construct Network Graph for Brain Tumor')
     if (config_net1):
         net_type1 = config_net1['net_type']
         net_name1 = config_net1['net_name']
@@ -52,7 +52,7 @@ def test(config_file):
         proby1 = tf.nn.softmax(predicty1)
 
     # 3, create session and load trained models
-    print('Create Session and Load Trained Models')
+    print('3. Create Session and Load Trained Models')
     all_vars = tf.global_variables()
     sess = tf.InteractiveSession()
     sess.run(tf.global_variables_initializer())
@@ -62,23 +62,42 @@ def test(config_file):
         saver1.restore(sess, config_net1['model_file'])
 
     # 4, load test images
-    print('Load Test Images')
+    print('4. Load Test Images')
     dataloader = DataLoader(config_data)
     dataloader.load_data()
     image_num = dataloader.get_total_image_number()
     print('image_num is ', image_num)
 
     # 5, start to test
+    print('5. Start to test')
     test_slice_direction = config_test.get('test_slice_direction', 'all')
     save_folder = config_data['save_folder']
     test_time = []
     struct = ndimage.generate_binary_structure(3, 2)
     margin = config_test.get('roi_patch_margin', 5)
 
+    for i in range(image_num):
+        [temp_imgs, temp_weight, temp_name, img_names, temp_bbox, temp_size] = dataloader.get_image_data_with_name(i)
+        t0 = time.time()
+        # 5.1, test of 1st network
+        if(config_net1):
+            print('5.1, test of 1st network')
+            data_shapes  = [ data_shape1[:-1],  data_shape1[:-1],  data_shape1[:-1]]
+            label_shapes = [label_shape1[:-1], label_shape1[:-1], label_shape1[:-1]]
+            nets = [net1, net1, net1]
+            outputs = [proby1, proby1, proby1]
+            inputs =  [x1, x1, x1]
+            class_num = class_num1
+        prob1 = test_one_image_three_nets_adaptive_shape(temp_imgs, data_shapes, label_shapes, data_shape1[-1], class_num,
+                   batch_size, sess, nets, outputs, inputs, shape_mode = 2)
+        pred1 =  np.asarray(np.argmax(prob1, axis = 3), np.uint16)
+        pred1 = pred1 * temp_weight
+        print('the shape of pred1 is ', pred1.shape)
+
 if __name__ == '__main__':
     if(len(sys.argv) != 2):
         print('Number of arguments should be 2. e.g.')
-        print('    python test.py config17/test_all_class.txt')
+        print('python test.py config17/UNet3D_test_step_wt.txt')
         exit()
     config_file = str(sys.argv[1])
     assert(os.path.isfile(config_file))

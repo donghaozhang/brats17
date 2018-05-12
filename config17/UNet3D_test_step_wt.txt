@@ -5,7 +5,7 @@ data_names        = config17/test_names_temp.txt
 modality_postfix  = [flair, t1, t1ce, t2]
 file_postfix      = nii.gz
 
-[network1ax]
+[network1]
 net_type            = UNet3D
 net_name            = UNet3D_WT32
 downsample_twice    = True

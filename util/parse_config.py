@@ -98,7 +98,7 @@ def parse_config(filename):
                 val = parse_value_from_string(val_str) 
             else:
                 val = None
-            print(section, key,val_str, val)
+            # print(section, key,val_str, val)
             output[section][key] = val
     return output
             

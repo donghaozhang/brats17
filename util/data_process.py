@@ -277,15 +277,15 @@ def extract_roi_from_volume(volume, in_center, output_shape, fill = 'random'):
         output = np.random.normal(0, 1, size = output_shape)
     else:
         output = np.zeros(output_shape)
-    print('the output_shape is ', output_shape)
+    # print('the output_shape is ', output_shape)
     r0max = [int(x/2) for x in output_shape]
-    print('r0max: ', r0max)
+    # print('r0max: ', r0max)
     r1max = [output_shape[i] - r0max[i] for i in range(len(r0max))]
-    print('r1max: ', r1max)
+    # print('r1max: ', r1max)
     r0 = [min(r0max[i], in_center[i]) for i in range(len(r0max))]
-    print('r0: ', r0)
+    # print('r0: ', r0)
     r1 = [min(r1max[i], input_shape[i] - in_center[i]) for i in range(len(r0max))]
-    print('r1: ', r1)
+    # print('r1: ', r1)
     out_center = r0max
 
     output[np.ix_(range(out_center[0] - r0[0], out_center[0] + r1[0]),
@@ -313,9 +313,9 @@ def set_roi_to_volume(volume, center, sub_volume):
         if(center[i] >= volume_shape[i]):
             return output_volume
     r0max = [int(x/2) for x in patch_shape]
-    print('r0max: ', r0max)
+    # print('r0max: ', r0max)
     r1max = [patch_shape[i] - r0max[i] for i in range(len(r0max))]
-    print('r1max: ', r1max)
+    # print('r1max: ', r1max)
     r0 = [min(r0max[i], center[i]) for i in range(len(r0max))]
     r1 = [min(r1max[i], volume_shape[i] - center[i]) for i in range(len(r0max))]
     patch_center = r0max
