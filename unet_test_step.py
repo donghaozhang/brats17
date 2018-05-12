@@ -88,16 +88,30 @@ def test(config_file):
             outputs = [proby1, proby1, proby1]
             inputs =  [x1, x1, x1]
             class_num = class_num1
-        prob1 = test_one_image_three_nets_adaptive_shape(temp_imgs, data_shapes, label_shapes, data_shape1[-1], class_num,
-                   batch_size, sess, nets, outputs, inputs, shape_mode = 2)
+        # prob1 = test_one_image_three_nets_adaptive_shape(temp_imgs, data_shapes, label_shapes, data_shape1[-1], class_num,
+        #            batch_size, sess, nets, outputs, inputs, shape_mode = 2)
+        print('The function test_one_image_three_nets_adaptive_shape '
+              'has been replaced with volume_probability_dynamic_shape function')
+        [ax_data_shape, sg_data_shape, cr_data_shape] = data_shapes
+        [ax_label_shape, sg_label_shape, cr_label_shape] = label_shapes
+        prob1 = volume_probability_prediction_dynamic_shape(temp_imgs, ax_data_shape, ax_label_shape, data_shape1[-1],
+                                                    class_num, batch_size, sess, nets[0])
         pred1 =  np.asarray(np.argmax(prob1, axis = 3), np.uint16)
+        print('the shape of pred1 is ', pred1.shape)
         pred1 = pred1 * temp_weight
         print('the shape of pred1 is ', pred1.shape)
+        out_label = np.asarray(pred1, np.int16)
+    test_time.append(time.time() - t0)
+    final_label = np.zeros(temp_size, np.int16)
+    final_label = set_ND_volume_roi_with_bounding_box_range(final_label, temp_bbox[0], temp_bbox[1], out_label)
+    print('final_label is ', final_label.shape)
+    save_array_as_nifty_volume(final_label, save_folder + "/{0:}.nii.gz".format(temp_name), img_names[0])
+    print(temp_name)
 
 if __name__ == '__main__':
     if(len(sys.argv) != 2):
         print('Number of arguments should be 2. e.g.')
-        print('python test.py config17/UNet3D_test_step_wt.txt')
+        print('python unet_test_step.py config17/UNet3D_test_step_wt.txt')
         exit()
     config_file = str(sys.argv[1])
     assert(os.path.isfile(config_file))
