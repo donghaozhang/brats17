@@ -101,6 +101,7 @@ def get_ND_bounding_box(label, margin):
     """
     get the bounding box of the non-zero region of an ND volume
     """
+    # print('the value of margin is ', margin)
     input_shape = label.shape
     if(type(margin) is int ):
         margin = [margin]*len(input_shape)
@@ -111,10 +112,12 @@ def get_ND_bounding_box(label, margin):
     for i in range(len(input_shape)):
         idx_min.append(indxes[i].min())
         idx_max.append(indxes[i].max())
+    # print('idx_min: ', idx_min, 'idx_max: ', idx_max)
 
     for i in range(len(input_shape)):
         idx_min[i] = max(idx_min[i] - margin[i], 0)
         idx_max[i] = min(idx_max[i] + margin[i], input_shape[i] - 1)
+    # print('idx_min', idx_min, 'idx_max', idx_max)
     return idx_min, idx_max
 
 def crop_ND_volume_with_bounding_box(volume, min_idx, max_idx):

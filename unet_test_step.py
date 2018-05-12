@@ -103,6 +103,8 @@ def test(config_file):
         out_label = np.asarray(pred1, np.int16)
     test_time.append(time.time() - t0)
     final_label = np.zeros(temp_size, np.int16)
+    print('temp_size is ', temp_size)
+    print('the value of temp_bbox ', temp_bbox)
     final_label = set_ND_volume_roi_with_bounding_box_range(final_label, temp_bbox[0], temp_bbox[1], out_label)
     print('final_label is ', final_label.shape)
     save_array_as_nifty_volume(final_label, save_folder + "/{0:}.nii.gz".format(temp_name), img_names[0])
