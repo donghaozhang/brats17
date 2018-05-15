@@ -133,8 +133,8 @@ class UNet3D(TrainableLayer):
         _, output_tensor = block_layer(concat_1, is_training)
         print('output_tensor before cropping', output_tensor)
 
-        crop_layer = CropLayer(border=44, name='crop-88')
-        output_tensor = crop_layer(output_tensor)
+        # crop_layer = CropLayer(border=44, name='crop-88')
+        # output_tensor = crop_layer(output_tensor)
         print('output tensor after cropping', output_tensor)
         # print(block_layer)
         return output_tensor

@@ -10,9 +10,9 @@ net_type            = UNet3D
 net_name            = UNet3D_WT32
 downsample_twice    = True
 data_shape          = [96, 96, 96, 4]
-label_shape         = [8, 8, 8, 1]
+label_shape         = [96, 96, 96, 1]
 class_num           = 2
-model_file          = model17/UNet3D_wt32_49.ckpt
+model_file          = model17/UNet3D_wt32_199.ckpt
 
 [network1sg]
 net_type            = UNet3D

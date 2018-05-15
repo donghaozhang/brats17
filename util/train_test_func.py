@@ -51,8 +51,8 @@ def volume_probability_prediction(temp_imgs, data_shape, label_shape, data_chann
             temp_input_center = [center_slice, input_center[1], input_center[2], int(class_num/2)]
             # print('the value of label shape is ', label_shape)
             # start: The following code is specifically designed for UNet3d
-            label_shape[1] = 8
-            label_shape[2] = 8
+            label_shape[1] = 96
+            label_shape[2] = 96
             # end: The above code is specifically designed for UNet3d
             sub_prob = np.reshape(prob_mini_batch[batch_idx], label_shape + [class_num])
             temp_prob = set_roi_to_volume(temp_prob, temp_input_center, sub_prob)
