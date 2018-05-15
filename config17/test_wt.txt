@@ -1,25 +1,25 @@
 [data]
-data_root         = /home/guotwang/data/Brats17TrainingData
+data_root         = /home/donghao/Desktop/donghao/brain_sgementation/MICCAI_BraTS17_Data_Training
 save_folder       = result17
 data_names        = config17/test_names_temp.txt
 modality_postfix  = [flair, t1, t1ce, t2]
 file_postfix      = nii.gz
 
-[network1ax]
+[network1]
 net_type            = MSNet
 net_name            = MSNet_WT32
 downsample_twice    = True
-data_shape          = [19, 180, 160, 4]
-label_shape         = [11, 180, 160, 1]
+data_shape          = [19, 144, 144, 4]
+label_shape         = [11, 144, 144, 1]
 class_num           = 2
-model_file          = model17/msnet_wt32_20000.ckpt
+model_file          = model17/msnet_wt32_82.ckpt
 
 [network1sg]
 net_type            = MSNet
 net_name            = MSNet_WT32sg
 downsample_twice    = True
-data_shape          = [19, 160, 180, 4]
-label_shape         = [11, 160, 180, 1]
+data_shape          = [19, 144, 144, 4]
+label_shape         = [11, 144, 144, 1]
 class_num           = 2
 model_file          = model17/msnet_wt32sg_20000.ckpt
 
@@ -27,8 +27,8 @@ model_file          = model17/msnet_wt32sg_20000.ckpt
 net_type            = MSNet
 net_name            = MSNet_WT32cr
 downsample_twice    = True
-data_shape          = [19, 160, 160, 4]
-label_shape         = [11, 160, 160, 1]
+data_shape          = [19, 144, 144, 4]
+label_shape         = [11, 144, 144, 1]
 class_num           = 2
 model_file          = model17/msnet_wt32cr_20000.ckpt
 

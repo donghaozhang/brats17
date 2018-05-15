@@ -47,7 +47,7 @@ def test(config_file):
         net_class1 = NetFactory.create(net_type1)
         net1 = net_class1(num_classes=class_num1, w_regularizer=None,
                           b_regularizer=None, name=net_name1)
-        net1.set_params(config_net1)
+        # net1.set_params(config_net1)
         predicty1 = net1(x1, is_training=True)
         proby1 = tf.nn.softmax(predicty1)
 
@@ -58,6 +58,8 @@ def test(config_file):
     sess.run(tf.global_variables_initializer())
     if(config_net1):
         net1_vars = [x for x in all_vars if x.name[0:len(net_name1) + 1]==net_name1 + '/']
+        for x in all_vars:
+            print('the value of x is ', x.name)
         saver1 = tf.train.Saver(net1_vars)
         saver1.restore(sess, config_net1['model_file'])
 
@@ -107,6 +109,7 @@ def test(config_file):
     print('the value of temp_bbox ', temp_bbox)
     final_label = set_ND_volume_roi_with_bounding_box_range(final_label, temp_bbox[0], temp_bbox[1], out_label)
     print('final_label is ', final_label.shape)
+    print('final label element :', np.unique(final_label))
     save_array_as_nifty_volume(final_label, save_folder + "/{0:}.nii.gz".format(temp_name), img_names[0])
     print(temp_name)
 

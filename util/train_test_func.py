@@ -50,8 +50,10 @@ def volume_probability_prediction(temp_imgs, data_shape, label_shape, data_chann
             center_slice = min(center_slice, D - int(label_shape[0]/2))
             temp_input_center = [center_slice, input_center[1], input_center[2], int(class_num/2)]
             # print('the value of label shape is ', label_shape)
+            # start: The following code is specifically designed for UNet3d
             label_shape[1] = 8
             label_shape[2] = 8
+            # end: The above code is specifically designed for UNet3d
             sub_prob = np.reshape(prob_mini_batch[batch_idx], label_shape + [class_num])
             temp_prob = set_roi_to_volume(temp_prob, temp_input_center, sub_prob)
             sub_label_idx = sub_label_idx + 1
@@ -119,7 +121,9 @@ def volume_probability_prediction_dynamic_shape(temp_imgs, data_shape, label_sha
     Wx = max(int((W+3)/4)*4, data_shape[2])
     data_slice = data_shape[0]
     label_slice = label_shape[0]
+    # start: The following code is specifically designed for UNet3d
     Hx, Wx = 96, 96
+    # end: The above code is specifically designed for UNet3d
     full_data_shape = [batch_size, data_slice, Hx, Wx, data_channel]
     x = tf.placeholder(tf.float32, full_data_shape)
     # print('the tensor x :', x)
