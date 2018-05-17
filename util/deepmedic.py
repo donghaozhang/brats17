@@ -40,10 +40,10 @@ class DeepMedic(BaseNet):
         self.conv_features = [30, 30, 40, 40, 40, 40, 50, 50]
         self.fc_features = [150, 150, num_classes]
 
-    def set_params(self, params):
-        self.base_chns = params.get('base_feature_number', [32, 32, 32, 32])
-        self.acti_func = params.get('acti_func', 'prelu')
-        self.downsample_twice = params['downsample_twice']
+    # def set_params(self, params):
+    #     self.base_chns = params.get('base_feature_number', [32, 32, 32, 32])
+    #     self.acti_func = params.get('acti_func', 'prelu')
+    #     self.downsample_twice = params['downsample_twice']
 
     def layer_op(self, images, is_training, layer_id=-1):
         # image_size is defined as the largest context, then:

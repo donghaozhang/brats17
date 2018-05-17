@@ -48,6 +48,8 @@ def test(config_file):
         net1 = net_class1(num_classes=class_num1, w_regularizer=None,
                           b_regularizer=None, name=net_name1)
         # net1.set_params(config_net1)
+        if net_type1 == 'MSNet':
+            net1.set_params(config_net1)
         predicty1 = net1(x1, is_training=True)
         proby1 = tf.nn.softmax(predicty1)
 

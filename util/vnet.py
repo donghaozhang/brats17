@@ -40,10 +40,10 @@ class VNet(BaseNet):
 
         self.n_features = [16, 32, 64, 128, 256]
 
-    def set_params(self, params):
-        self.base_chns = params.get('base_feature_number', [32, 32, 32, 32])
-        self.acti_func = params.get('acti_func', 'prelu')
-        self.downsample_twice = params['downsample_twice']
+    # def set_params(self, params):
+    #     self.base_chns = params.get('base_feature_number', [32, 32, 32, 32])
+    #     self.acti_func = params.get('acti_func', 'prelu')
+    #     self.downsample_twice = params['downsample_twice']
 
     def layer_op(self, images, is_training, layer_id=-1):
         assert layer_util.check_spatial_dims(images, lambda x: x % 8 == 0)

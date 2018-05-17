@@ -250,6 +250,7 @@ class MSNet(TrainableLayer):
                     acti_func=self.acti_func,
                     with_bn = True,
                     name='pred_up1')
+
         pred_up2_1  = DeconvolutionalLayer(self.num_classes*2,
                     kernel_size= [1, 3, 3],
                     stride = [1, 2, 2],
@@ -261,6 +262,7 @@ class MSNet(TrainableLayer):
                     acti_func=self.acti_func,
                     with_bn = True,
                     name='pred_up2_1')
+
         pred_up2_2  = DeconvolutionalLayer(self.num_classes*2,
                     kernel_size= [1, 3, 3],
                     stride = [1, 2, 2],
@@ -272,6 +274,7 @@ class MSNet(TrainableLayer):
                     acti_func=self.acti_func,
                     with_bn = True,
                     name='pred_up2_2')
+
         pred_up3_1  = DeconvolutionalLayer(self.num_classes*4,
                     kernel_size= [1, 3, 3],
                     stride = [1, 2, 2],
@@ -283,6 +286,7 @@ class MSNet(TrainableLayer):
                     acti_func=self.acti_func,
                     with_bn = True,
                     name='pred_up3_1')
+
         pred_up3_2  = DeconvolutionalLayer(self.num_classes*4,
                     kernel_size= [1, 3, 3],
                     stride = [1, 2, 2],
@@ -305,50 +309,84 @@ class MSNet(TrainableLayer):
                 name='final_pred') 
  
         f1 = images
+        print('the size of images : ', images)
         f1 = block1_1(f1, is_training)
+        print('the size of f1 after block1_1 : ', f1)
         f1 = block1_2(f1, is_training)
+        print('the size of f1 after block1_2 : ', f1)
         f1 = fuse1(f1, is_training)
+        print('the size of f1 after fuse1 : ', f1)
+
         if(self.downsample_twice):
+            # print('downsampled has been called')
             f1 = downsample1(f1, is_training)
+            print('the size f1 after downsample1 : ', f1)
         if(self.base_chns[0] != self.base_chns[1]):
+            print('feature expansion has been called')
             f1 = feature_expand1(f1, is_training)
         f1 = block2_1(f1, is_training)
+        print('the size of f1 after block2_1 : ', f1)
         f1 = block2_2(f1, is_training)
+        print('the size of f1 after block2_2 : ', f1)
         f1 = fuse2(f1, is_training)
+        print('the size of f1 after fuse2 :', f1)
         
         f2 = downsample2(f1, is_training)
+        print('the size of f2 after downsample2 : ', f2)
+
         if(self.base_chns[1] != self.base_chns[2]):
+            print('f2 feature expansion has been called')
             f2 = feature_expand2(f2, is_training)
         f2 = block3_1(f2, is_training)
+        print('the size of f2 after block3_1 : ', f2)
         f2 = block3_2(f2, is_training)
+        print('the size of f2 after block3_2 : ', f2)
         f2 = block3_3(f2, is_training)
+        print('the size of f2 after block3_3 : ', f2)
         f2 = fuse3(f2, is_training)
+        print('the size of f2 after fuse3 :', f2)
         
         f3 = f2
         if(self.base_chns[2] != self.base_chns[3]):
+            print('f3 feature expansion')
             f3 = feature_expand3(f3, is_training) 
         f3 = block4_1(f3, is_training)
+        print('the size of f3 after block4_1 : ', f3)
         f3 = block4_2(f3, is_training)
+        print('the size of f3 after block4_2 : ', f3)
         f3 = block4_3(f3, is_training)
+        print('the size of f3 after block4_3 : ', f3)
         f3 = fuse4(f3, is_training)
+        print('the size of f3 after fuse4 :', f2)
         
         p1 = centra_slice1(f1)
+        print('the size of p1 after centra_slice1 :', f2)
         if(self.downsample_twice):
             p1 = pred_up1(p1, is_training)
         else:
             p1 = pred1(p1)
-         
+        print('the size of p1', p1)
+
         p2 = centra_slice2(f2)
+        print('the size of p1 after centra_slice2 :', p2)
         p2 = pred_up2_1(p2, is_training)
+        print('the size of p1 after pred_up2_1 :', p2)
         if(self.downsample_twice):
+            # print('p2 downsmaple_twice has been called')
             p2 = pred_up2_2(p2, is_training)
+        print('the size of p2 after pred_up2_2 : ', p2)
         
         p3 = pred_up3_1(f3, is_training)
+        print('the size of p3 after pred_up3_1 : ', p3)
         if(self.downsample_twice):
+            # print('p3 downsampled third has been called')
             p3 = pred_up3_2(p3, is_training)
+        print('the size of p3 after pred_up3_2 : ', p3)
 
         cat = tf.concat([p1, p2, p3], axis = 4, name = 'concate')
+        print('the size of cat is : ', cat)
         pred = final_pred(cat)
+        print('the size of pred is : ', pred)
         return pred
 
 class ResBlock(TrainableLayer):
