@@ -28,6 +28,7 @@ class UNet3D(TrainableLayer):
                  name='UNet'):
         super(UNet3D, self).__init__(name=name)
 
+        # self.n_features = [16, 32, 64, 128, 512]
         self.n_features = [32, 64, 128, 256, 512]
         self.acti_func = acti_func
         self.num_classes = num_classes
@@ -42,7 +43,7 @@ class UNet3D(TrainableLayer):
         # image_size  should be divisible by 8
         assert layer_util.check_spatial_dims(images, lambda x: x % 8 == 0)
         assert layer_util.check_spatial_dims(images, lambda x: x >= 89)
-        print('the size of images', images)
+        # print('the size of images', images)
         block_layer = UNetBlock('DOWNSAMPLE',
                                 (self.n_features[0], self.n_features[1]),
                                 (3, 3), with_downsample_branch=True,
@@ -51,8 +52,8 @@ class UNet3D(TrainableLayer):
                                 acti_func=self.acti_func,
                                 name='L1')
         pool_1, conv_1 = block_layer(images, is_training)
-        print('the size of conv_1', conv_1)
-        print('the size of pool_1', pool_1)
+        # print('the size of conv_1', conv_1)
+        # print('the size of pool_1', pool_1)
         # print(block_layer)
 
         block_layer = UNetBlock('DOWNSAMPLE',
@@ -63,8 +64,8 @@ class UNet3D(TrainableLayer):
                                 acti_func=self.acti_func,
                                 name='L2')
         pool_2, conv_2 = block_layer(pool_1, is_training)
-        print('the size of conv_2', conv_2)
-        print('the size of pool_2', pool_2)
+        # print('the size of conv_2', conv_2)
+        # print('the size of pool_2', pool_2)
         # print(block_layer)
 
         block_layer = UNetBlock('DOWNSAMPLE',
@@ -75,8 +76,8 @@ class UNet3D(TrainableLayer):
                                 acti_func=self.acti_func,
                                 name='L3')
         pool_3, conv_3 = block_layer(pool_2, is_training)
-        print('the size of conv_3', conv_3)
-        print('the size of pool_3', pool_3)
+        # print('the size of conv_3', conv_3)
+        # print('the size of pool_3', pool_3)
         # print(block_layer)
 
         block_layer = UNetBlock('UPSAMPLE',
@@ -87,7 +88,7 @@ class UNet3D(TrainableLayer):
                                 acti_func=self.acti_func,
                                 name='L4')
         up_3, _ = block_layer(pool_3, is_training)
-        print('the size of up_3', up_3)
+        # print('the size of up_3', up_3)
         # print(block_layer)
 
         block_layer = UNetBlock('UPSAMPLE',
@@ -99,8 +100,8 @@ class UNet3D(TrainableLayer):
                                 name='R3')
         concat_3 = ElementwiseLayer('CONCAT')(conv_3, up_3)
         up_2, _ = block_layer(concat_3, is_training)
-        print('the size of concat_3 is ', concat_3)
-        print('the size of up_2 is ', up_2)
+        # print('the size of concat_3 is ', concat_3)
+        # print('the size of up_2 is ', up_2)
         # print(block_layer)
 
         block_layer = UNetBlock('UPSAMPLE',
@@ -112,8 +113,8 @@ class UNet3D(TrainableLayer):
                                 name='R2')
         concat_2 = ElementwiseLayer('CONCAT')(conv_2, up_2)
         up_1, _ = block_layer(concat_2, is_training)
-        print('the size of concat_2 is ', concat_2)
-        print('the size of up1 is ', up_1)
+        # print('the size of concat_2 is ', concat_2)
+        # print('the size of up1 is ', up_1)
         # print(block_layer)
 
         block_layer = UNetBlock('NONE',
@@ -127,11 +128,11 @@ class UNet3D(TrainableLayer):
                                 acti_func=self.acti_func,
                                 name='R1_FC')
         concat_1 = ElementwiseLayer('CONCAT')(conv_1, up_1)
-        print('the size of concat_1 is ', concat_1)
+        # print('the size of concat_1 is ', concat_1)
 
         # for the last layer, upsampling path is not used
         _, output_tensor = block_layer(concat_1, is_training)
-        print('output_tensor before cropping', output_tensor)
+        # print('output_tensor before cropping', output_tensor)
 
         # crop_layer = CropLayer(border=44, name='crop-88')
         # output_tensor = crop_layer(output_tensor)

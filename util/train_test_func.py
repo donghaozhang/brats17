@@ -14,7 +14,7 @@ import numpy as np
 from util.data_process import *
 
 def volume_probability_prediction(temp_imgs, data_shape, label_shape, data_channel,
-                                  class_num, batch_size, sess, proby, x):
+                                  class_num, batch_size, sess, proby, x, nettype):
     '''
     Test one image with sub regions along z-axis
     '''
@@ -22,6 +22,13 @@ def volume_probability_prediction(temp_imgs, data_shape, label_shape, data_chann
     input_center = [int(D/2), int(H/2), int(W/2)]
     temp_prob = np.zeros([D, H, W, class_num])
     sub_image_baches = []
+    print('the label_shape is : ', label_shape)
+    # if nettype == 'UNet3D':
+    #     # start: The following code is specifically designed for UNet3d
+    #     label_shape[1] = 96
+    #     label_shape[2] = 96
+    #     # end: The above code is specifically designed for UNet3d
+
     for center_slice in range(int(label_shape[0]/2), D + int(label_shape[0]/2), label_shape[0]):
         center_slice = min(center_slice, D - int(label_shape[0]/2))
         sub_image_bach = []
@@ -50,10 +57,7 @@ def volume_probability_prediction(temp_imgs, data_shape, label_shape, data_chann
             center_slice = min(center_slice, D - int(label_shape[0]/2))
             temp_input_center = [center_slice, input_center[1], input_center[2], int(class_num/2)]
             # print('the value of label shape is ', label_shape)
-            # start: The following code is specifically designed for UNet3d
-            label_shape[1] = 96
-            label_shape[2] = 96
-            # end: The above code is specifically designed for UNet3d
+
             sub_prob = np.reshape(prob_mini_batch[batch_idx], label_shape + [class_num])
             temp_prob = set_roi_to_volume(temp_prob, temp_input_center, sub_prob)
             sub_label_idx = sub_label_idx + 1
@@ -110,19 +114,27 @@ def volume_probability_prediction_3d_roi(temp_imgs, data_shape, label_shape, dat
     return temp_prob 
 
 def volume_probability_prediction_dynamic_shape(temp_imgs, data_shape, label_shape, data_channel, 
-                                  class_num, batch_size, sess, net):
+                                  class_num, batch_size, sess, net, nettype):
     '''
     Test one image with sub regions along z-axis
     The height and width of input tensor is adapted to those of the input image
     '''
     # construct graph
     [D, H, W] = temp_imgs[0].shape
+    print('D, H, W is ', D, H, W)
     Hx = max(int((H+3)/4)*4, data_shape[1])
     Wx = max(int((W+3)/4)*4, data_shape[2])
     data_slice = data_shape[0]
     label_slice = label_shape[0]
+    print('the values of Wx, Hx and D are ', Wx, Hx, D)
     # start: The following code is specifically designed for UNet3d
-    Hx, Wx = 96, 96
+    if nettype == 'UNet3D':
+        Wx = int ((Wx//8)*8)
+        Hx = int ((Hx//8)*8)
+        Dx = int ((D//8)*8)
+        # data_slice = Dx
+        data_slice = Dx
+    print('the value of Wx and Hx after refinement ', Wx, Hx)
     # end: The above code is specifically designed for UNet3d
     full_data_shape = [batch_size, data_slice, Hx, Wx, data_channel]
     x = tf.placeholder(tf.float32, full_data_shape)
@@ -135,7 +147,7 @@ def volume_probability_prediction_dynamic_shape(temp_imgs, data_shape, label_sha
     # print('new_data_shape', new_data_shape)
     # print('new_label_shape', new_label_shape)
     temp_prob = volume_probability_prediction(temp_imgs, new_data_shape, new_label_shape, data_channel, 
-                                              class_num, batch_size, sess, proby, x)
+                                              class_num, batch_size, sess, proby, x, nettype)
     return temp_prob
 
 def test_one_image_three_nets_adaptive_shape(temp_imgs, data_shapes, label_shapes, data_channel, class_num,

@@ -8,3 +8,8 @@ for a, b in zip(x, y):
 
 for a, b, c in zip(x, y, z):
     print(a, b, c)
+
+kernels=[[1, 3, 3], [1, 3, 3]]
+
+for i in range(len(kernels)):
+    print(i)
