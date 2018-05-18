@@ -132,8 +132,11 @@ def volume_probability_prediction_dynamic_shape(temp_imgs, data_shape, label_sha
         Wx = int ((Wx//8)*8)
         Hx = int ((Hx//8)*8)
         Dx = int ((D//8)*8)
-        # data_slice = Dx
+        # Enough memory start
         data_slice = Dx
+        label_slice = Dx
+        # Enough memory end
+        # data_slice = 96
     print('the value of Wx and Hx after refinement ', Wx, Hx)
     # end: The above code is specifically designed for UNet3d
     full_data_shape = [batch_size, data_slice, Hx, Wx, data_channel]

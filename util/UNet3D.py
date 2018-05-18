@@ -28,8 +28,10 @@ class UNet3D(TrainableLayer):
                  name='UNet'):
         super(UNet3D, self).__init__(name=name)
 
-        # self.n_features = [16, 32, 64, 128, 512]
-        self.n_features = [32, 64, 128, 256, 512]
+        self.n_features = [16, 32, 64, 128, 256]
+        # Enough memory start
+        # self.n_features = [32, 64, 128, 256, 512]
+        # Enough memory end
         self.acti_func = acti_func
         self.num_classes = num_classes
 
