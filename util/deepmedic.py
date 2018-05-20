@@ -53,7 +53,7 @@ class DeepMedic(BaseNet):
         # to make sure same size of feature maps from both pathways:
         #   normal path size: (image_size / d_factor - 16) * d_factor + 16
         #   normal path output: (image_size / d_factor - 16) * d_factor
-        print('deepmedic is running')
+        # print('deepmedic is running')
         # where 16 is fixed by the receptive field of conv layers
         # TODO: make sure label_size = image_size/d_factor - 16
 
@@ -71,10 +71,11 @@ class DeepMedic(BaseNet):
             images,
             lambda x: x > self.d_factor * 16))  # required by receptive field
 
+        print('the size of x is ', images)
         # crop 25x25x25 from 57x57x57
         crop_op = CropLayer(border=self.crop_diff, name='cropping_input')
         normal_path = crop_op(images)
-        print(crop_op)
+        print('the normal_path after crop_op is : ', normal_path)
 
         # downsample 19x19x19 from 57x57x57
         downsample_op = DownSampleLayer(func='CONSTANT',
@@ -83,7 +84,7 @@ class DeepMedic(BaseNet):
                                         padding='VALID',
                                         name='downsample_input')
         downsample_path = downsample_op(images)
-        print(downsample_op)
+        print('downsample_path is ', downsample_path)
 
         # convolutions for both pathways
         for n_features in self.conv_features:
@@ -97,7 +98,7 @@ class DeepMedic(BaseNet):
                 acti_func=self.acti_func,
                 name='normal_conv')
             normal_path = conv_path_1(normal_path, is_training)
-            print(conv_path_1)
+            print('normal_path : ', normal_path)
 
             # downsampled pathway convolutions
             conv_path_2 = ConvolutionalLayer(
@@ -109,18 +110,21 @@ class DeepMedic(BaseNet):
                 acti_func=self.acti_func,
                 name='downsample_conv')
             downsample_path = conv_path_2(downsample_path, is_training)
-            print(conv_path_2)
+            print('downsample_path is ', downsample_path)
 
         # upsampling the downsampled pathway
         downsample_path = UpSampleLayer('REPLICATE',
                                         kernel_size=self.d_factor,
                                         stride=self.d_factor)(downsample_path)
+        print('final downsample_path after upsamplinglayer is ', downsample_path)
 
         # concatenate both pathways
         output_tensor = ElementwiseLayer('CONCAT')(normal_path, downsample_path)
+        print('output_tensor after elementwiselayer is ; ', output_tensor)
 
         # 1x1x1 convolution layer
         for n_features in self.fc_features:
+            # print('1x1 convolution has been called ')
             conv_fc = ConvolutionalLayer(
                 n_output_chns=n_features,
                 kernel_size=1,
@@ -129,6 +133,7 @@ class DeepMedic(BaseNet):
                 w_regularizer=self.regularizers['w'],
                 name='conv_1x1x1_{}'.format(n_features))
             output_tensor = conv_fc(output_tensor, is_training)
-            print(conv_fc)
-
+            print('the output tensor after 1x1x1 conv : ', output_tensor)
+            # print(conv_fc)
+        print('final output size is ', output_tensor)
         return output_tensor

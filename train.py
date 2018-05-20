@@ -122,7 +122,7 @@ def train(config_file):
     if net_type == 'MSNet':
         net.set_params(config_net)
     predicty = net(x, is_training = True)
-    print('the prediction has been produced', predicty)
+    # print('the prediction has been produced', predicty)
     proby    = tf.nn.softmax(predicty)
     
     loss_func = LossFunction(n_class=class_num)
@@ -136,7 +136,7 @@ def train(config_file):
     # 3, initialize session and saver
     print('Initialize session and saver')
     lr = config_train.get('learning_rate', 1e-3)
-    print('lr', lr)
+    # print('lr', lr)
     opt_step = tf.train.AdamOptimizer(lr).minimize(loss)
     sess = tf.InteractiveSession()   
     sess.run(tf.global_variables_initializer())  
@@ -183,6 +183,7 @@ if __name__ == '__main__':
         print('Number of arguments should be 2. e.g.')
         print('    python train.py config17/MSNet_train_single_wt_ax.txt')
         exit()
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
     config_file = str(sys.argv[1])
     assert(os.path.isfile(config_file))
     train(config_file)
