@@ -12,7 +12,7 @@ downsample_twice    = True
 data_shape          = [48, 48, 48, 4]
 label_shape         = [48, 48, 48, 1]
 class_num           = 2
-model_file          = model17/highres3dnet_wt32_5.ckpt
+model_file          = model17/highres3dnet_wt32_445.ckpt
 
 [testing]
 test_slice_direction = all
