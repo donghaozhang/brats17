@@ -6,13 +6,13 @@ modality_postfix  = [flair, t1, t1ce, t2]
 file_postfix      = nii.gz
 
 [network1]
-net_type            = DeepMedic
-net_name            = DeepMedic_WT32
+net_type            = HighRes3DNet
+net_name            = HighRes3DNetc_WT32
 downsample_twice    = True
-data_shape          = [57, 57, 57, 4]
-label_shape         = [39, 39, 39, 1]
+data_shape          = [48, 48, 48, 4]
+label_shape         = [48, 48, 48, 1]
 class_num           = 2
-model_file          = model17/DeepMedic_wt32_295.ckpt
+model_file          = model17/highres3dnet_wt32_5.ckpt
 
 [testing]
 test_slice_direction = all

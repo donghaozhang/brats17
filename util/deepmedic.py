@@ -37,7 +37,8 @@ class DeepMedic(BaseNet):
 
         self.d_factor = 3  # downsampling factor
         self.crop_diff = ((self.d_factor - 1) * 16) // 2
-        self.conv_features = [30, 30, 40, 40, 40, 40, 50, 50]
+        # self.conv_features = [30, 30, 40, 40, 40, 40, 50, 50]
+        self.conv_features = [100, 100, 100, 100, 100, 100, 50, 50]
         self.fc_features = [150, 150, num_classes]
 
     # def set_params(self, params):
@@ -72,9 +73,12 @@ class DeepMedic(BaseNet):
             lambda x: x > self.d_factor * 16))  # required by receptive field
 
         print('the size of x is ', images)
+        # original deepmedic code start
         # crop 25x25x25 from 57x57x57
-        crop_op = CropLayer(border=self.crop_diff, name='cropping_input')
-        normal_path = crop_op(images)
+        # crop_op = CropLayer(border=self.crop_diff, name='cropping_input')
+        # normal_path = crop_op(images)
+        # original deepmedic code end
+        normal_path = images
         print('the normal_path after crop_op is : ', normal_path)
 
         # downsample 19x19x19 from 57x57x57
@@ -112,10 +116,25 @@ class DeepMedic(BaseNet):
             downsample_path = conv_path_2(downsample_path, is_training)
             print('downsample_path is ', downsample_path)
 
+        # additional code 41 x 41 x 41 start
+        conv_path_1 = ConvolutionalLayer(
+            n_output_chns=n_features,
+            kernel_size=3,
+            padding='VALID',
+            w_initializer=self.initializers['w'],
+            w_regularizer=self.regularizers['w'],
+            acti_func=self.acti_func,
+            name='normal_conv')
+        normal_path = conv_path_1(normal_path, is_training)
+        # additional code 39 x 39 x 39 end
+
         # upsampling the downsampled pathway
+        # downsample_path = UpSampleLayer('REPLICATE',
+        #                                 kernel_size=self.d_factor,
+        #                                 stride=self.d_factor)(downsample_path)
         downsample_path = UpSampleLayer('REPLICATE',
-                                        kernel_size=self.d_factor,
-                                        stride=self.d_factor)(downsample_path)
+                                        kernel_size=13,
+                                        stride=13)(downsample_path)
         print('final downsample_path after upsamplinglayer is ', downsample_path)
 
         # concatenate both pathways

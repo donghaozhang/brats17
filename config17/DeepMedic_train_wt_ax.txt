@@ -7,7 +7,7 @@ file_postfix          = nii.gz
 with_ground_truth     = True
 batch_size            = 1
 data_shape            = [57, 57, 57, 4]
-label_shape           = [9, 9, 9, 1]
+label_shape           = [39, 39, 39, 1]
 label_convert_source  = [0, 1, 2, 4]
 label_convert_target  = [0, 1, 1, 1]
 batch_slice_direction = axial
@@ -22,9 +22,9 @@ downsample_twice    = True
 class_num           = 2
 
 [training]
-learning_rate      = 1e-3
+learning_rate      = 1e-2
 decay              = 1e-7
-maximal_iteration  = 20
+maximal_iteration  = 500
 snapshot_iteration = 1
 start_iteration    = 0
 test_iteration     = 5

@@ -128,7 +128,7 @@ def volume_probability_prediction_dynamic_shape(temp_imgs, data_shape, label_sha
     label_slice = label_shape[0]
     print('the values of Wx, Hx and D are ', Wx, Hx, D)
     # start: The following code is specifically designed for UNet3d
-    if nettype == 'UNet3D':
+    if (nettype == 'UNet3D') or (nettype == 'HighRes3DNet'):
         Wx = int ((Wx//8)*8)
         Hx = int ((Hx//8)*8)
         Dx = int ((D//8)*8)
@@ -155,9 +155,9 @@ def volume_probability_prediction_dynamic_shape(temp_imgs, data_shape, label_sha
     new_data_shape = [data_slice, Hx, Wx]
     new_label_shape = [label_slice, Hx, Wx]
     if nettype == 'DeepMedic':
-        new_label_shape[0] = 9
-        new_label_shape[1] = 9
-        new_label_shape[2] = 9
+        new_label_shape[0] = 39
+        new_label_shape[1] = 39
+        new_label_shape[2] = 39
     # print('new_data_shape', new_data_shape)
     # print('new_label_shape', new_label_shape)
     temp_prob = volume_probability_prediction(temp_imgs, new_data_shape, new_label_shape, data_channel, 

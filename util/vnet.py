@@ -48,13 +48,15 @@ class VNet(BaseNet):
     def layer_op(self, images, is_training, layer_id=-1):
         assert layer_util.check_spatial_dims(images, lambda x: x % 8 == 0)
 
-        if layer_util.infer_spatial_rank(images) == 2:
-            padded_images = tf.tile(images, [1, 1, 1, self.n_features[0]])
-        elif layer_util.infer_spatial_rank(images) == 3:
-            padded_images = tf.tile(images, [1, 1, 1, 1, self.n_features[0]])
-        else:
-            raise ValueError('not supported spatial rank of the input image')
+        # if layer_util.infer_spatial_rank(images) == 2:
+        #     padded_images = tf.tile(images, [1, 1, 1, self.n_features[0]])
+        # elif layer_util.infer_spatial_rank(images) == 3:
+        #     padded_images = tf.tile(images, [1, 1, 1, 1, self.n_features[0]])
+        # else:
+        #     raise ValueError('not supported spatial rank of the input image')
+        padded_images = images
         # downsampling  blocks
+        print('padded_images is ', padded_images)
         res_1, down_1 = VNetBlock('DOWNSAMPLE', 1,
                                   self.n_features[0],
                                   self.n_features[1],
@@ -62,6 +64,8 @@ class VNet(BaseNet):
                                   w_regularizer=self.regularizers['w'],
                                   acti_func=self.acti_func,
                                   name='L1')(images, padded_images)
+        print('res_1 is : ', res_1)
+        print('down_1 is : ', down_1)
         res_2, down_2 = VNetBlock('DOWNSAMPLE', 2,
                                   self.n_features[1],
                                   self.n_features[2],
@@ -69,6 +73,8 @@ class VNet(BaseNet):
                                   w_regularizer=self.regularizers['w'],
                                   acti_func=self.acti_func,
                                   name='L2')(down_1, down_1)
+        print('res_2 is ; ', res_2)
+        print('donw_2 is : ', down_2)
         res_3, down_3 = VNetBlock('DOWNSAMPLE', 3,
                                   self.n_features[2],
                                   self.n_features[3],
@@ -76,11 +82,15 @@ class VNet(BaseNet):
                                   w_regularizer=self.regularizers['w'],
                                   acti_func=self.acti_func,
                                   name='L3')(down_2, down_2)
+        print('res_3 is : ', res_3)
+        print('down_3 is : ', down_3)
         res_4, down_4 = VNetBlock('DOWNSAMPLE', 3,
                                   self.n_features[3],
                                   self.n_features[4],
                                   acti_func=self.acti_func,
                                   name='L4')(down_3, down_3)
+        print('res_4 is : ', res_4)
+        print('down_4 is : ', down_4)
         # upsampling blocks
         _, up_4 = VNetBlock('UPSAMPLE', 3,
                             self.n_features[4],
@@ -89,7 +99,9 @@ class VNet(BaseNet):
                             w_regularizer=self.regularizers['w'],
                             acti_func=self.acti_func,
                             name='V_')(down_4, down_4)
+        print('up_4 is ', up_4)
         concat_r4 = ElementwiseLayer('CONCAT')(up_4, res_4)
+        print('concat_r4 is ', concat_r4)
         _, up_3 = VNetBlock('UPSAMPLE', 3,
                             self.n_features[4],
                             self.n_features[3],
@@ -97,7 +109,9 @@ class VNet(BaseNet):
                             w_regularizer=self.regularizers['w'],
                             acti_func=self.acti_func,
                             name='R4')(concat_r4, up_4)
+        print('up_3 is ', up_3)
         concat_r3 = ElementwiseLayer('CONCAT')(up_3, res_3)
+        print('concat_r3 is ', concat_r3)
         _, up_2 = VNetBlock('UPSAMPLE', 3,
                             self.n_features[3],
                             self.n_features[2],
@@ -105,7 +119,9 @@ class VNet(BaseNet):
                             w_regularizer=self.regularizers['w'],
                             acti_func=self.acti_func,
                             name='R3')(concat_r3, up_3)
+        print('up_2 is ', up_2)
         concat_r2 = ElementwiseLayer('CONCAT')(up_2, res_2)
+        print('concat_r2 is ', concat_r2)
         _, up_1 = VNetBlock('UPSAMPLE', 2,
                             self.n_features[2],
                             self.n_features[1],
@@ -113,8 +129,10 @@ class VNet(BaseNet):
                             w_regularizer=self.regularizers['w'],
                             acti_func=self.acti_func,
                             name='R2')(concat_r2, up_2)
+        print('up_1 is ', up_1)
         # final class score
         concat_r1 = ElementwiseLayer('CONCAT')(up_1, res_1)
+        print('concat_r1 is ', concat_r1)
         _, output_tensor = VNetBlock('SAME', 1,
                                      self.n_features[1],
                                      self.num_classes,
@@ -124,6 +142,7 @@ class VNet(BaseNet):
                                      b_regularizer=self.regularizers['b'],
                                      acti_func=self.acti_func,
                                      name='R1')(concat_r1, up_1)
+        print('output_tensor is ', output_tensor)
         return output_tensor
 
 
@@ -191,6 +210,6 @@ class VNetBlock(TrainableLayer):
                                   b_regularizer=self.regularizers['b'],
                                   kernel_size=1, with_bias=True)(res_flow)
         main_flow = ActiLayer(self.acti_func)(main_flow)
-        print(self)
-        print('VNet is running')
+        # print(self)
+        # print('VNet is running')
         return res_flow, main_flow

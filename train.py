@@ -125,6 +125,7 @@ def train(config_file):
     # print('the prediction has been produced', predicty)
     proby    = tf.nn.softmax(predicty)
     
+    # loss_func = LossFunction(n_class=class_num, name='cross_entropy')
     loss_func = LossFunction(n_class=class_num)
     # print('type of lossfunction', loss_func.type)
     # print('the size of y is ', y)

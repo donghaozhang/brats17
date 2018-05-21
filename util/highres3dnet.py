@@ -149,7 +149,8 @@ class HighRes3DNet(BaseNet):
     def _print(self, list_of_layers):
         for (op, _) in list_of_layers:
             print(op)
-        print('highres3dnet is running')
+            # print()
+        # print('highres3dnet is running')
 
 
 

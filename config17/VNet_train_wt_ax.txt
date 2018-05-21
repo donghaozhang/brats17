@@ -1,6 +1,6 @@
 [data]
 data_root             = /home/donghao/Desktop/donghao/brain_sgementation/MICCAI_BraTS17_Data_Training
-data_names            = config17/train_names_part.txt
+data_names            = config17/train_names_10images.txt
 modality_postfix      = [flair, t1, t1ce, t2]
 label_postfix         = seg
 file_postfix          = nii.gz
@@ -22,12 +22,12 @@ downsample_twice    = True
 class_num           = 2
 
 [training]
-learning_rate      = 1e-1
-decay              = 1e-10
+learning_rate      = 1e-3
+decay              = 1e-8
 maximal_iteration  = 100
 snapshot_iteration = 1
 start_iteration    = 0
-test_iteration     = 1
-test_step          = 1
+test_iteration     = 5
+test_step          = 10
 model_pre_trained  = 
-model_save_prefix  = model17/msnet_wt32
+model_save_prefix  = model17/VNet_wt32
