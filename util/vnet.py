@@ -39,6 +39,7 @@ class VNet(BaseNet):
             name=name)
 
         self.n_features = [16, 32, 64, 128, 256]
+        self.n_features = self.n_features * 4
 
     # def set_params(self, params):
     #     self.base_chns = params.get('base_feature_number', [32, 32, 32, 32])
