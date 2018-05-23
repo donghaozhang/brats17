@@ -124,9 +124,10 @@ def train(config_file):
     predicty = net(x, is_training = True)
     # print('the prediction has been produced', predicty)
     proby    = tf.nn.softmax(predicty)
-    # if net_type == '':
-
-    loss_func = LossFunction(n_class=class_num, name='cross_entropy')
+    if net_type == 'VNet':
+        loss_func = LossFunction(n_class=class_num, name='cross_entropy')
+    else:
+        loss_func = LossFunction(n_class=class_num)
     # loss_func = LossFunction(n_class=class_num)
     # print('type of lossfunction', loss_func.type)
     # print('the size of y is ', y)
@@ -139,8 +140,10 @@ def train(config_file):
     print('Initialize session and saver')
     lr = config_train.get('learning_rate', 1e-3)
     # print('lr', lr)
-    # opt_step = tf.train.AdamOptimizer(lr).minimize(loss)
-    opt_step = tf.train.AdadeltaOptimizer(lr).minimize(loss)
+    if net_type == 'VNet':
+        opt_step = tf.train.AdadeltaOptimizer(lr).minimize(loss)
+    else:
+        opt_step = tf.train.AdamOptimizer(lr).minimize(loss)
     sess = tf.InteractiveSession()   
     sess.run(tf.global_variables_initializer())  
     saver = tf.train.Saver(max_to_keep=100)

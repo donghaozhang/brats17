@@ -137,7 +137,13 @@ def volume_probability_prediction_dynamic_shape(temp_imgs, data_shape, label_sha
         label_slice = Dx
         # Enough memory end
         # data_slice = 96
-    if nettype == 'DeepMedic':
+    elif  (nettype == 'VNet'):
+        Wx = int((Wx // 8) * 8)
+        Hx = Wx
+        Dx = Wx
+        data_slice = Dx
+        label_slice = Dx
+    elif nettype == 'DeepMedic':
         Wx = 57
         Hx = 57
         Dx = 57
