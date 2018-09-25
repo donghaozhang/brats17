@@ -26,6 +26,10 @@ pip install niftynet
 * BraTS 2015 or 2017 dataset. Data can be downloaded from http://braintumorsegmentation.org/
 
 # How to use
+## 0 (Personal Use), Useful Command
+* conda env list
+* source activate tensorflow_1_3
+
 ## 1, Prepare data
 * Download BraTS dataset, and uncompress the training and testing zip files. For example, the training set will be in `../data_root/BRATS2015_Training` or `data_root/MICCAI_BraTS17_Data_Training` and the validation set will be in `data_root/BRATS2015_Validation` or `data_root/Brats17ValidationData`.
 
