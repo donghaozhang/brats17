@@ -28,6 +28,12 @@ from util.deepmedic import DeepMedic
 from util.vnet import VNet
 from util.UNet3D import UNet3D
 from util.highres3dnet import HighRes3DNet
+from tensorboardX import SummaryWriter
+
+DEBUG=True
+def log(s):
+    if DEBUG:
+        print(s)
 
 class NetFactory(object):
     @staticmethod
@@ -90,7 +96,7 @@ def labels_to_one_hot(ground_truth, num_classes=1):
 
 def train(config_file):
     # 1, load configuration parameters
-    print('Load Configuration Parameters')
+    log('Load Configuration Parameters')
     config = parse_config(config_file)
     config_data  = config['data']
     config_net   = config['network']
@@ -105,7 +111,7 @@ def train(config_file):
     batch_size  = config_data.get('batch_size', 5)
    
     # 2, construct graph
-    print('Construct Graph')
+    log('Construct Graph')
     full_data_shape  = [batch_size] + config_data['data_shape']
     full_label_shape = [batch_size] + config_data['label_shape']
     x = tf.placeholder(tf.float32, shape = full_data_shape)
@@ -137,7 +143,7 @@ def train(config_file):
     # print('size of predicty:',predicty)
     
     # 3, initialize session and saver
-    print('Initialize session and saver')
+    log('Initialize session and saver')
     lr = config_train.get('learning_rate', 1e-3)
     # print('lr', lr)
     if net_type == 'VNet':
@@ -154,6 +160,11 @@ def train(config_file):
     # 4, start to train
     loss_file = config_train['model_save_prefix'] + "_loss.txt"
     start_it  = config_train.get('start_iteration', 0)
+    print('debug-------')
+    print(config_train['model_save_prefix'])
+    logdir = config_train['model_save_prefix']
+    writer = SummaryWriter(log_dir=logdir)
+    print('debug-------')
     if( start_it > 0):
         saver.restore(sess, config_train['model_pre_trained'])
     loss_list, temp_loss_list = [], []
@@ -177,6 +188,7 @@ def train(config_file):
             batch_dice = np.asarray(batch_dice_list, np.float32).mean()
             t = time.strftime('%X %x %Z')
             print(t, 'n', n,'loss', batch_dice)
+            writer.add_scalar('loss', batch_dice, n)
             loss_list.append(batch_dice)
             np.savetxt(loss_file, np.asarray(loss_list))
 
@@ -186,8 +198,8 @@ def train(config_file):
     
 if __name__ == '__main__':
     if(len(sys.argv) != 2):
-        print('Number of arguments should be 2. e.g.')
-        print('    python train.py config17/MSNet_train_single_wt_ax.txt')
+        log('Number of arguments should be 2. e.g.')
+        log('    python train.py config17/MSNet_train_single_wt_ax.txt')
         exit()
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
     config_file = str(sys.argv[1])
