@@ -28,7 +28,7 @@ pip install niftynet
 # How to use
 ## 0 (Personal Use), Useful Command
 * conda env list
-* source activate tensorflow_1_3
+* source activate brats17_tf
 * export PATH=/usr/local/cuda-9.0/bin${PATH:+:${PATH}}
 * export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 
