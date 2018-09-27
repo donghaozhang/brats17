@@ -31,6 +31,7 @@ pip install niftynet
 * source activate brats17_tf
 * export PATH=/usr/local/cuda-9.0/bin${PATH:+:${PATH}}
 * export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+* python train.py config17/MSNet_train_single_wt_ax.txt
 
 ## 1, Prepare data
 * Download BraTS dataset, and uncompress the training and testing zip files. For example, the training set will be in `../data_root/BRATS2015_Training` or `data_root/MICCAI_BraTS17_Data_Training` and the validation set will be in `data_root/BRATS2015_Validation` or `data_root/Brats17ValidationData`.
