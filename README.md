@@ -28,9 +28,13 @@ pip install niftynet
 # How to use
 ## 0 (Personal Use), Useful Command
 * conda env list
-* source activate tensorflow_1_3
+* source activate brats17_tf
 * export PATH=/usr/local/cuda-9.0/bin${PATH:+:${PATH}}
 * export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+* python train.py config17/MSNet_train_single_wt_ax.txt (single file for debug purpose)
+* full dataset path: /home/donghao/Desktop/donghao/brain_sgementation/brain_data_full
+* visulisation tool path: /home/donghao/Desktop/donghao/brain_sgementation/itksnap-3.6.0-20170401-Linux-x86_64/bin
+* tensorboard --logdir model17/msnet_wt32
 
 ## 1, Prepare data
 * Download BraTS dataset, and uncompress the training and testing zip files. For example, the training set will be in `../data_root/BRATS2015_Training` or `data_root/MICCAI_BraTS17_Data_Training` and the validation set will be in `data_root/BRATS2015_Validation` or `data_root/Brats17ValidationData`.
