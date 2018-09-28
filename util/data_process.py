@@ -56,6 +56,7 @@ def load_nifty_volume_as_array(filename, with_header = False):
     outputs:
         data: a numpy data array
     """
+    print(filename)
     img = nibabel.load(filename)
     data = img.get_data()
     data = np.transpose(data, [2,1,0])
@@ -73,6 +74,7 @@ def save_array_as_nifty_volume(data, filename, reference_name = None):
         reference_name: file name of the reference image of which affine and header are used
     outputs: None
     """
+    print(filename)
     img = sitk.GetImageFromArray(data)
     if(reference_name is not None):
         img_ref = sitk.ReadImage(reference_name)
