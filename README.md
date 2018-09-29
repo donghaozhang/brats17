@@ -31,10 +31,32 @@ pip install niftynet
 * source activate brats17_tf
 * export PATH=/usr/local/cuda-9.0/bin${PATH:+:${PATH}}
 * export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+
+MSNet
 * python train.py config17/MSNet_train_single_wt_ax.txt (single file for debug purpose)
 * python train.py config17/MSNet_train_66_wt_ax.txt
 * python test_single.py config17/MSNet_test_single_wt_ax.txt
 * python test_single.py config17/MSNet_test_36_wt_ax.txt
+
+HighRes3DNet
+* (done) python train.py config17/HighRes3DNet_train_single_wt_ax.txt 
+* (done) python train.py config17/HighRes3DNet_train_66_wt_ax.txt
+* (done) python test_single.py config17/HighRes3DNet_test_single_wt_ax.txt
+* (done) python test_single.py config17/HighRes3DNet_test_36_wt_ax.txt
+
+VNet
+* python train.py config17/VNet_train_single_wt_ax.txt 
+* python train.py config17/VNet_train_66_wt_ax.txt
+* python test_single.py config17/VNet_test_single_wt_ax.txt
+* python test_single.py config17/VNet_test_36_wt_ax.txt
+
+UNet3D
+* python train.py config17/UNet3D_train_single_wt_ax.txt 
+* python train.py config17/UNet3D_train_66_wt_ax.txt
+* python test_single.py config17/UNet3D_test_single_wt_ax.txt
+* python test_single.py config17/VNet_test_36_wt_ax.txt
+
+Others
 * full dataset path: /home/donghao/Desktop/donghao/brain_sgementation/brain_data_full
 * visulisation tool path: /home/donghao/Desktop/donghao/brain_sgementation/itksnap-3.6.0-20170401-Linux-x86_64/bin
 * tensorboard --logdir model17/msnet_wt32
