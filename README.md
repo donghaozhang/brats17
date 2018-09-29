@@ -39,7 +39,7 @@ MSNet
 * python test_single.py config17/MSNet_test_36_wt_ax.txt
 
 HighRes3DNet
-* python train.py config17/HighRes3DNet_train_single_wt_ax.txt (single file for debug purpose)
+* python train.py config17/HighRes3DNet_train_single_wt_ax.txt 
 * python train.py config17/HighRes3DNet_train_66_wt_ax.txt
 * python test_single.py config17/HighRes3DNet_test_single_wt_ax.txt
 * python test_single.py config17/HighRes3DNet_test_36_wt_ax.txt
