@@ -1,0 +1,19 @@
+[data]
+data_root         = /home/donghao/Desktop/donghao/brain_segmentation/brain_data_full
+save_folder       = result17
+data_names        = config17/test_names_66.txt
+modality_postfix  = [flair, t1, t1ce, t2]
+file_postfix      = nii.gz
+
+[network1]
+net_type            = HighRes3DNet
+net_name            = HighRes3DNet_WT32
+downsample_twice    = True
+data_shape          = [48, 48, 48, 4]
+label_shape         = [48, 48, 48, 1]
+class_num           = 2
+model_file          = model17/highres3dnet_wt32_1.ckpt
+
+[testing]
+test_slice_direction = all
+whole_tumor_only     = True
