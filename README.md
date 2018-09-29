@@ -31,7 +31,7 @@ pip install niftynet
 * source activate brats17_tf
 * export PATH=/usr/local/cuda-9.0/bin${PATH:+:${PATH}}
 * export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-color:red
+These are <b style='color:red'>red words</b>.
 * python train.py config17/MSNet_train_single_wt_ax.txt (single file for debug purpose)
 * python train.py config17/MSNet_train_66_wt_ax.txt
 * python test_single.py config17/MSNet_test_single_wt_ax.txt
