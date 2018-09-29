@@ -93,15 +93,16 @@ def test(config_file):
         pred1 = pred1 * temp_weight
         print('the shape of pred1 is ', pred1.shape)
         out_label = np.asarray(pred1, np.int16)
-    test_time.append(time.time() - t0)
-    final_label = np.zeros(temp_size, np.int16)
-    print('temp_size is ', temp_size)
-    print('the value of temp_bbox ', temp_bbox)
-    final_label = set_ND_volume_roi_with_bounding_box_range(final_label, temp_bbox[0], temp_bbox[1], out_label)
-    print('final_label is ', final_label.shape)
-    print('final label element :', np.unique(final_label))
-    save_array_as_nifty_volume(final_label, save_folder + "/{0:}.nii.gz".format(temp_name), img_names[0])
-    print(temp_name)
+    # test_time.append(time.time() - t0)
+        final_label = np.zeros(temp_size, np.int16)
+        print('temp_size is ', temp_size)
+        print('the value of temp_bbox ', temp_bbox)
+        final_label = set_ND_volume_roi_with_bounding_box_range(final_label, temp_bbox[0], temp_bbox[1], out_label)
+        print('final_label is ', final_label.shape)
+        print('final label element :', np.unique(final_label))
+        print('debug mode is ',  img_names[0])
+        save_array_as_nifty_volume(final_label, save_folder + "/{0:}.nii.gz".format(temp_name), img_names[0])
+        print(temp_name)
 
 if __name__ == '__main__':
     if(len(sys.argv) != 2):

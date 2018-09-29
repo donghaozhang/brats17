@@ -1,6 +1,6 @@
 [data]
-data_root             = /home/donghao/Desktop/donghao/brain_sgementation/brain_data_full
-data_names            = config17/train_names_part.txt
+data_root             = /home/donghao/Desktop/donghao/brain_segmentation/brain_data_full
+data_names            = config17/train_names_66.txt
 modality_postfix      = [flair, t1, t1ce, t2]
 label_postfix         = seg
 file_postfix          = nii.gz
