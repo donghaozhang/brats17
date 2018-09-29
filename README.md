@@ -56,6 +56,7 @@ UNet3D
 * python test_single.py config17/UNet3D_test_single_wt_ax.txt
 * python test_single.py config17/VNet_test_36_wt_ax.txt
 
+Others
 * full dataset path: /home/donghao/Desktop/donghao/brain_sgementation/brain_data_full
 * visulisation tool path: /home/donghao/Desktop/donghao/brain_sgementation/itksnap-3.6.0-20170401-Linux-x86_64/bin
 * tensorboard --logdir model17/msnet_wt32
