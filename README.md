@@ -45,10 +45,10 @@ HighRes3DNet
 * (done) python test_single.py config17/HighRes3DNet_test_36_wt_ax.txt
 
 VNet
-* python train.py config17/VNet_train_single_wt_ax.txt 
-* python train.py config17/VNet_train_66_wt_ax.txt
-* python test_single.py config17/VNet_test_single_wt_ax.txt
-* python test_single.py config17/VNet_test_36_wt_ax.txt
+* (done) python train.py config17/VNet_train_single_wt_ax.txt 
+* (done) python train.py config17/VNet_train_66_wt_ax.txt
+* (done) python test_single.py config17/VNet_test_single_wt_ax.txt
+* (done) python test_single.py config17/VNet_test_36_wt_ax.txt
 
 UNet3D
 * python train.py config17/UNet3D_train_single_wt_ax.txt 
