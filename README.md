@@ -54,7 +54,7 @@ UNet3D
 * python train.py config17/UNet3D_train_single_wt_ax.txt 
 * python train.py config17/UNet3D_train_66_wt_ax.txt
 * python test_single.py config17/UNet3D_test_single_wt_ax.txt
-* python test_single.py config17/VNet_test_36_wt_ax.txt
+* python test_single.py config17/UNet3D_test_36_wt_ax.txt
 
 Others
 * full dataset path: /home/donghao/Desktop/donghao/brain_sgementation/brain_data_full
