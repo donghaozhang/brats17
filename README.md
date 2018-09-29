@@ -33,7 +33,8 @@ pip install niftynet
 * export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 * python train.py config17/MSNet_train_single_wt_ax.txt (single file for debug purpose)
 * python train.py config17/MSNet_train_66_wt_ax.txt
-* python test_single.py config17/MSNet_test_single_wt_ax.txt 
+* python test_single.py config17/MSNet_test_single_wt_ax.txt
+* python test_single.py config17/MSNet_test_single_wt_ax.txt
 * full dataset path: /home/donghao/Desktop/donghao/brain_sgementation/brain_data_full
 * visulisation tool path: /home/donghao/Desktop/donghao/brain_sgementation/itksnap-3.6.0-20170401-Linux-x86_64/bin
 * tensorboard --logdir model17/msnet_wt32
