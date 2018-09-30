@@ -11,7 +11,7 @@ net_name            = HighRes3DNet_WT32
 downsample_twice    = True
 data_shape          = [48, 48, 48, 4]
 label_shape         = [48, 48, 48, 1]
-class_num           = 2
+class_num           = 4
 model_file          = model17/highres3dnet_wt32_1.ckpt
 
 [testing]

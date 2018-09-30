@@ -9,7 +9,7 @@ batch_size            = 1
 data_shape            = [48, 48, 48, 4]
 label_shape           = [48, 48, 48, 1]
 label_convert_source  = [0, 1, 2, 4]
-label_convert_target  = [0, 1, 1, 1]
+label_convert_target  = [0, 1, 2, 3]
 batch_slice_direction = axial
 train_with_roi_patch  = False
 label_roi_mask        =
@@ -19,7 +19,7 @@ roi_patch_margin      =
 net_type            = HighRes3DNet
 net_name            = HighRes3DNet_WT32
 downsample_twice    = True
-class_num           = 2
+class_num           = 4
 
 [training]
 learning_rate      = 1e-3
