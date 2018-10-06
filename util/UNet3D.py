@@ -9,7 +9,7 @@ from niftynet.layer.downsample import DownSampleLayer
 from niftynet.layer.elementwise import ElementwiseLayer
 from niftynet.layer.crop import CropLayer
 from niftynet.utilities.util_common import look_up_operations
-DEBUG = True
+DEBUG = False
 
 
 def log(s):
