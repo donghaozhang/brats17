@@ -9,7 +9,12 @@ from niftynet.layer.downsample import DownSampleLayer
 from niftynet.layer.elementwise import ElementwiseLayer
 from niftynet.layer.crop import CropLayer
 from niftynet.utilities.util_common import look_up_operations
+DEBUG = True
 
+
+def log(s):
+    if DEBUG:
+        print(s)
 
 class UNet3D(TrainableLayer):
     """
@@ -38,7 +43,7 @@ class UNet3D(TrainableLayer):
         self.initializers = {'w': w_initializer, 'b': b_initializer}
         self.regularizers = {'w': w_regularizer, 'b': b_regularizer}
 
-        print('using {}'.format(name))
+        log('using {}'.format(name))
 
 
     def layer_op(self, images, is_training, layer_id=-1):
@@ -54,8 +59,8 @@ class UNet3D(TrainableLayer):
                                 acti_func=self.acti_func,
                                 name='L1')
         pool_1, conv_1 = block_layer(images, is_training)
-        print('the size of conv_1', conv_1)
-        print('the size of pool_1', pool_1)
+        log('the size of conv_1'.format(conv_1))
+        log('the size of pool_1'.format(pool_1))
         # print(block_layer)
 
         block_layer = UNetBlock('DOWNSAMPLE',
@@ -66,8 +71,8 @@ class UNet3D(TrainableLayer):
                                 acti_func=self.acti_func,
                                 name='L2')
         pool_2, conv_2 = block_layer(pool_1, is_training)
-        print('the size of conv_2', conv_2)
-        print('the size of pool_2', pool_2)
+        log('the size of conv_2 is {}'.format(conv_2))
+        log('the size of pool_2 is {}'.format(pool_2))
         # print(block_layer)
 
         block_layer = UNetBlock('DOWNSAMPLE',
@@ -78,8 +83,8 @@ class UNet3D(TrainableLayer):
                                 acti_func=self.acti_func,
                                 name='L3')
         pool_3, conv_3 = block_layer(pool_2, is_training)
-        print('the size of conv_3', conv_3)
-        print('the size of pool_3', pool_3)
+        log('the size of conv_3 is {}'.format(conv_3))
+        log('the size of pool_3 is {}'.format(pool_3))
         # print(block_layer)
 
         block_layer = UNetBlock('UPSAMPLE',
@@ -90,7 +95,7 @@ class UNet3D(TrainableLayer):
                                 acti_func=self.acti_func,
                                 name='L4')
         up_3, _ = block_layer(pool_3, is_training)
-        print('the size of up_3', up_3)
+        log('the size of up_3 {}'.format(up_3))
         # print(block_layer)
 
         block_layer = UNetBlock('UPSAMPLE',
@@ -102,8 +107,8 @@ class UNet3D(TrainableLayer):
                                 name='R3')
         concat_3 = ElementwiseLayer('CONCAT')(conv_3, up_3)
         up_2, _ = block_layer(concat_3, is_training)
-        print('the size of concat_3 is ', concat_3)
-        print('the size of up_2 is ', up_2)
+        log('the size of concat_3 is {}'.format(concat_3))
+        log('the size of up_2 is {}'.format(up_2))
         # print(block_layer)
 
         block_layer = UNetBlock('UPSAMPLE',
@@ -115,8 +120,8 @@ class UNet3D(TrainableLayer):
                                 name='R2')
         concat_2 = ElementwiseLayer('CONCAT')(conv_2, up_2)
         up_1, _ = block_layer(concat_2, is_training)
-        print('the size of concat_2 is ', concat_2)
-        print('the size of up1 is ', up_1)
+        log('the size of concat_2 is {}'.format(concat_2))
+        log('the size of up1 is {}'.format(up_1))
         # print(block_layer)
 
         block_layer = UNetBlock('NONE',
@@ -130,7 +135,7 @@ class UNet3D(TrainableLayer):
                                 acti_func=self.acti_func,
                                 name='R1_FC')
         concat_1 = ElementwiseLayer('CONCAT')(conv_1, up_1)
-        print('the size of concat_1 is ', concat_1)
+        log('the size of concat_1 is {}'.format(concat_1))
 
         # for the last layer, upsampling path is not used
         _, output_tensor = block_layer(concat_1, is_training)
@@ -138,7 +143,7 @@ class UNet3D(TrainableLayer):
 
         # crop_layer = CropLayer(border=44, name='crop-88')
         # output_tensor = crop_layer(output_tensor)
-        print('output tensor is ', output_tensor)
+        log('output tensor is {}'.format(output_tensor))
         # print(block_layer)
         return output_tensor
 
@@ -181,7 +186,7 @@ class UNetBlock(TrainableLayer):
                                          acti_func=self.acti_func,
                                          name='{}'.format(n_features))
             output_tensor = conv_op(output_tensor, is_training)
-            print('the value of i is ', i)
+            log('the value of i is '.format(i))
             i = i + 1
 
         if self.with_downsample_branch:

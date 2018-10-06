@@ -13,6 +13,13 @@ import tensorflow as tf
 import numpy as np
 from util.data_process import *
 
+DEBUG=False
+
+
+def log(s):
+    if DEBUG:
+        print(s)
+
 def volume_probability_prediction(temp_imgs, data_shape, label_shape, data_channel,
                                   class_num, batch_size, sess, proby, x, nettype):
     '''
@@ -22,7 +29,7 @@ def volume_probability_prediction(temp_imgs, data_shape, label_shape, data_chann
     input_center = [int(D/2), int(H/2), int(W/2)]
     temp_prob = np.zeros([D, H, W, class_num])
     sub_image_baches = []
-    print('the label_shape is : ', label_shape)
+    log('the label_shape is : {}'.format(label_shape))
     # if nettype == 'UNet3D':
     #     # start: The following code is specifically designed for UNet3d
     #     label_shape[1] = 96
@@ -121,12 +128,12 @@ def volume_probability_prediction_dynamic_shape(temp_imgs, data_shape, label_sha
     '''
     # construct graph
     [D, H, W] = temp_imgs[0].shape
-    print('D, H, W is ', D, H, W)
+    log('D, H, W is {} {} {}'.format(D, H, W))
     Hx = max(int((H+3)/4)*4, data_shape[1])
     Wx = max(int((W+3)/4)*4, data_shape[2])
     data_slice = data_shape[0]
     label_slice = label_shape[0]
-    print('the values of Wx, Hx and D are ', Wx, Hx, D)
+    log('the values of Wx, Hx and D are {} {} {}'.format(Wx, Hx, D))
     # start: The following code is specifically designed for UNet3d
     if (nettype == 'UNet3D') or (nettype == 'HighRes3DNet'):
         Wx = int ((Wx//8)*8)
@@ -150,7 +157,7 @@ def volume_probability_prediction_dynamic_shape(temp_imgs, data_shape, label_sha
         data_slice = Dx
         label_slice = 9
 
-    print('the value of Wx and Hx after refinement ', Wx, Hx)
+    log('the value of Wx and Hx after refinement is {} {}'.format(Wx, Hx))
     # end: The above code is specifically designed for UNet3d
     full_data_shape = [batch_size, data_slice, Hx, Wx, data_channel]
     x = tf.placeholder(tf.float32, full_data_shape)
